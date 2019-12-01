@@ -2,7 +2,7 @@ package it.lucacrema.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.util.Base64;
 
 import java.io.ByteArrayInputStream;
