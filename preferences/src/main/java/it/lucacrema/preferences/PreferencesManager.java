@@ -78,11 +78,14 @@ public class PreferencesManager {
     }
 
     /**
+     * @deprecated This method is not safe to use as it's not 100% sure
+     *
      * @param ctx context of an Activity or Service
      * @param key key for the resource
      * @param <O> class for the serialized object
      * @return the object de-serialized if present, null otherwise
      */
+    @Deprecated
     public static <O> O getObject(Context ctx, String key) {
         String memoryObjectString = getSharedPreferences(ctx).getString(key, null);
         if (memoryObjectString == null)
@@ -135,6 +138,8 @@ public class PreferencesManager {
     }
 
     /**
+     * @deprecated This method is not 100% safe, do not use it
+     *
      * Saves a whole object state
      *
      * @param ctx    context of an Activity or Service
@@ -144,6 +149,7 @@ public class PreferencesManager {
      * @return if the value has been set correctly
      * @throws IOException Any exception thrown by the underlying OutputStream.
      */
+    @Deprecated
     public static <O extends Serializable> boolean setObject(Context ctx, String key, O object) throws IOException {
         ByteArrayOutputStream bo = new ByteArrayOutputStream();
         ObjectOutputStream so = new ObjectOutputStream(bo);
