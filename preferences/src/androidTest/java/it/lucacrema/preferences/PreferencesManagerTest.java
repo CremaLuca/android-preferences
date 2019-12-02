@@ -16,10 +16,12 @@ public class PreferencesManagerTest {
     private static final String DEFAULT_STRING_KEY = "defaultStringKey";
     private static final String DEFAULT_BOOL_KEY = "defaultBooleanKey";
     private static final String DEFAULT_OBJECT_KEY = "defaultObjectKey";
+    private static final String DEFAULT_OBJECT_KEY_2 = "defaultObjectKey2";
     private static final int DEFAULT_INT_VALUE = 100;
     private static final String DEFAULT_STRING_VALUE = "Roberto";
     private static final boolean DEFAULT_BOOL_VALUE = true;
     private static final String DEFAULT_OBJECT_VALUE = "Test String";
+    private static final Integer DEFAULT_OBJECT_VALUE_2 = 6;
     private static final int MAX_SHIFT_VALUE = 3;
     private Context ctx;
 
@@ -68,13 +70,23 @@ public class PreferencesManagerTest {
     }
 
     @Test
-    public void setObject_getBObject_isEquals() {
+    public void setObject_getObject_String_isEquals() {
         try {
             PreferencesManager.setObject(ctx, DEFAULT_OBJECT_KEY, DEFAULT_OBJECT_VALUE);
         } catch (IOException e) {
             Assert.fail("Should not have thrown an IOException");
         }
-        Assert.assertEquals(DEFAULT_OBJECT_VALUE, PreferencesManager.<String>getObject(ctx, DEFAULT_OBJECT_KEY));
+        Assert.assertEquals(DEFAULT_OBJECT_VALUE, PreferencesManager.getObject(ctx, DEFAULT_OBJECT_KEY));
+    }
+
+    @Test
+    public void setObject_getObject_Integer_isEquals() {
+        try {
+            PreferencesManager.setObject(ctx, DEFAULT_OBJECT_KEY_2, DEFAULT_OBJECT_VALUE_2);
+        } catch (IOException e) {
+            Assert.fail("Should not have thrown an IOException");
+        }
+        Assert.assertEquals(DEFAULT_OBJECT_VALUE_2, PreferencesManager.getObject(ctx, DEFAULT_OBJECT_KEY_2));
     }
 
     @Test

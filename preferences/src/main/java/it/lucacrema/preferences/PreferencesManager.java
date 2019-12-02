@@ -13,12 +13,15 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 /**
- * Service that writes and reads configurations/preferences in Android memory
+ * Service that writes and reads small configurations/preferences in Android memory.
+ * Wrapper for {@link androidx.preference.PreferenceManager} class
  *
+ *
+ * @version 2.4
  * @author Luca Crema
- * @version 2.0
+ * @since 02/12/2019
  */
-public class PreferencesManager {
+final public class PreferencesManager {
 
     public static final int DEFAULT_INTEGER_RETURN = -1;
     public static final String DEFAULT_STRING_RETURN = "";
@@ -78,24 +81,21 @@ public class PreferencesManager {
     }
 
     /**
-     * @deprecated This method is not safe to use as it's not 100% sure
-     *
      * @param ctx context of an Activity or Service
      * @param key key for the resource
-     * @param <O> class for the serialized object
      * @return the object de-serialized if present, null otherwise
      */
     @Deprecated
-    public static <O> O getObject(Context ctx, String key) {
+    public static Object getObject(Context ctx, String key) {
         String memoryObjectString = getSharedPreferences(ctx).getString(key, null);
         if (memoryObjectString == null)
             return null;
 
         try {
-            byte[] b = memoryObjectString.getBytes();
+            byte[] b = Base64.decode( memoryObjectString, Base64.DEFAULT);
             ByteArrayInputStream bi = new ByteArrayInputStream(b);
             ObjectInputStream si = new ObjectInputStream(bi);
-            return (O) (si.readObject());
+            return si.readObject();
         } catch (Exception e) {
             return null;
         }
@@ -138,19 +138,16 @@ public class PreferencesManager {
     }
 
     /**
-     * @deprecated This method is not 100% safe, do not use it
-     *
      * Saves a whole object state
      *
      * @param ctx    context of an Activity or Service
      * @param key    key for the resource
      * @param object value to be put or override
-     * @param <O>    type of the class to write
      * @return if the value has been set correctly
      * @throws IOException Any exception thrown by the underlying OutputStream.
      */
     @Deprecated
-    public static <O extends Serializable> boolean setObject(Context ctx, String key, O object) throws IOException {
+    public static boolean setObject(Context ctx, String key, Serializable object) throws IOException {
         ByteArrayOutputStream bo = new ByteArrayOutputStream();
         ObjectOutputStream so = new ObjectOutputStream(bo);
         so.writeObject(object);
