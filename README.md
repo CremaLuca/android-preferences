@@ -1,8 +1,7 @@
 # Android preferences
-Library that uses android preferences quickly, without any need of Builders.
+Library that uses android preferences quickly to write and read `int`, `String`, `boolean`, `Object` from memory.
 
 You can use this library anywhere on your app, it just needs a context.
-
 ```Java
 public class PrefsApplication extends Application {
 
