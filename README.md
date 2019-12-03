@@ -35,7 +35,7 @@ In the single module `build.gradle` add
 ```Java
 dependencies {
     ...
-    implementation 'com.github.CremaLuca:android-preferences:2.4'
+    implementation 'it.lucacrema:android-preferences:2.4'
 }
 ```
 # Usage
