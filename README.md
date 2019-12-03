@@ -1,4 +1,4 @@
-# android-preferences
+# Android preferences
 Library that uses android preferences quickly, without any need of Builders.
 
 You can use this library anywhere on your app, it just needs a context.
@@ -19,6 +19,24 @@ public class PrefsApplication extends Application {
         boolean preferencesBoolean = PreferencesManager.getBoolean(this, "boolKey");
         String preferencesStringObject = PreferencesManager.getObject(this, "objectKey");
     }
+}
+```
+
+# Installation
+Installation is done using [Jitpack](https://jitpack.io). Add to the root application `build.gradle`
+```Java
+allprojects {
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+In the single module `build.gradle` add
+```Java
+dependencies {
+    ...
+    implementation 'com.github.CremaLuca:android-preferences:2.4'
 }
 ```
 
