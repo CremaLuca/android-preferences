@@ -38,7 +38,15 @@ dependencies {
     implementation 'com.github.CremaLuca:android-preferences:2.4'
 }
 ```
-
+# Usage
+With Android preferences you can read and write `int`, `String`, `boolean` and `Object`, the way you do it is:
+```Java
+PreferencesManager.set{type of data}(context, key, value);
+```
+You can also remove saved values
+```Java
+PreferencesManager.removeValue(context, key);
+```
 # License
 
 ```
