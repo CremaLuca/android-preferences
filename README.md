@@ -8,6 +8,7 @@ public class PrefsApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        
         PreferencesManager.setInt(this, "intKey", 5);
         PreferencesManager.setString(this, "stringKey", "Test string");
         PreferencesManager.setBoolean(this, "boolKey", false);
@@ -35,30 +36,46 @@ In the single module `build.gradle` add
 ```Java
 dependencies {
     ...
-    implementation 'it.lucacrema:android-preferences:2.4'
+    implementation 'it.lucacrema:android-preferences:2.5'
 }
 ```
+
 # Usage
 With Android preferences you can read and write `int`, `String`, `boolean` and `Object`, the way you do it is:
 ```Java
 PreferencesManager.set{type of data}(context, key, value);
 ```
-You can also remove saved values
+Where {type of data} can be `Int`, `String`, `Boolean`, `Object`
+
+You can also remove saved values of any type
 ```Java
 PreferencesManager.removeValue(context, key);
 ```
+And remove all the saved values
+```Java
+PreferencesManager.removeAllValues(context);
+```
+
 ## Warning
-You can't use the same key for two different type of values
+If you were to use the same string key for two values of different type, the old value would be overwritten
+```Java
+PreferencesManager.setInt(context, "key", 5);
+PreferencesManager.setString(context, "key", "string");
+
+PreferencesManager.getInt(context, "key"); //Throws ClassCastException
+PreferencesManager.getString(context, "key"); //returns "string"
+```
 
 # License
 
 ```
+Copyright 2019 Luca Crema
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-   http://www.apache.org/licenses/LICENSE-2.0
+   https://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
