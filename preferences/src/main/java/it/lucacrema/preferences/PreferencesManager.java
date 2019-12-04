@@ -2,8 +2,10 @@ package it.lucacrema.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import androidx.preference.PreferenceManager;
 import android.util.Base64;
+
+import androidx.annotation.NonNull;
+import androidx.preference.PreferenceManager;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -11,19 +13,22 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * Service that writes and reads small configurations/preferences in Android memory.
  * Wrapper for {@link androidx.preference.PreferenceManager} class
  *
- *
- * @version 2.5
  * @author Luca Crema
+ * @version 3.0
  * @since 02/12/2019
  */
+@SuppressWarnings({"unused", "WeakerAccess", "UnusedReturnValue"})
 final public class PreferencesManager {
 
     public static final int DEFAULT_INTEGER_RETURN = -1;
+    public static final float DEFAULT_FLOAT_RETURN = 0f;
+    public static final long DEFAULT_LONG_RETURN = -1L;
     public static final String DEFAULT_STRING_RETURN = "";
     public static final boolean DEFAULT_BOOLEAN_RETURN = false;
 
@@ -33,7 +38,7 @@ final public class PreferencesManager {
      * @param context context of an Activity or Service
      * @return default shared preferences class
      */
-    private static SharedPreferences getSharedPreferences(Context context) {
+    private static SharedPreferences getSharedPreferences(@NonNull Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context);
     }
 
@@ -41,7 +46,7 @@ final public class PreferencesManager {
      * @param sharedPreferences can be the default or a custom shared preferences class
      * @return the editor for the preferences
      */
-    private static SharedPreferences.Editor getEditor(SharedPreferences sharedPreferences) {
+    private static SharedPreferences.Editor getEditor(@NonNull SharedPreferences sharedPreferences) {
         return sharedPreferences.edit();
     }
 
@@ -49,7 +54,7 @@ final public class PreferencesManager {
      * @param context context of an Activity or Service
      * @return default shared preferences editor
      */
-    private static SharedPreferences.Editor getEditor(Context context) {
+    private static SharedPreferences.Editor getEditor(@NonNull Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context).edit();
     }
 
@@ -59,8 +64,28 @@ final public class PreferencesManager {
      * @return the value of the resource if present, {@link #DEFAULT_INTEGER_RETURN} ({@value #DEFAULT_INTEGER_RETURN}) otherwise
      * @throws ClassCastException if the stored value for the required key is not int
      */
-    public static int getInt(Context ctx, String key) throws ClassCastException{
+    public static int getInt(@NonNull Context ctx, @NonNull String key) throws ClassCastException {
         return getSharedPreferences(ctx).getInt(key, DEFAULT_INTEGER_RETURN);
+    }
+
+    /**
+     * @param ctx context of an Activity or Service
+     * @param key key for the resource
+     * @return the value of the resource if present, {@link #DEFAULT_FLOAT_RETURN} ({@value #DEFAULT_FLOAT_RETURN}) otherwise
+     * @throws ClassCastException if the stored value for the required key is not float
+     */
+    public static float getFloat(@NonNull Context ctx, @NonNull String key) throws ClassCastException {
+        return getSharedPreferences(ctx).getFloat(key, DEFAULT_FLOAT_RETURN);
+    }
+
+    /**
+     * @param ctx context of an Activity or Service
+     * @param key key for the resource
+     * @return the value of the resource if present, {@link #DEFAULT_LONG_RETURN} ({@value #DEFAULT_LONG_RETURN}) otherwise
+     * @throws ClassCastException if the stored value for the required key is not long
+     */
+    public static long getLong(@NonNull Context ctx, @NonNull String key) throws ClassCastException {
+        return getSharedPreferences(ctx).getLong(key, DEFAULT_LONG_RETURN);
     }
 
     /**
@@ -69,7 +94,7 @@ final public class PreferencesManager {
      * @return the value of the resource if present, {@link #DEFAULT_STRING_RETURN} ({@value #DEFAULT_STRING_RETURN}) otherwise
      * @throws ClassCastException if the stored value for the required key is not String
      */
-    public static String getString(Context ctx, String key) throws ClassCastException{
+    public static String getString(@NonNull Context ctx, @NonNull String key) throws ClassCastException {
         return getSharedPreferences(ctx).getString(key, DEFAULT_STRING_RETURN);
     }
 
@@ -79,7 +104,7 @@ final public class PreferencesManager {
      * @return the value of the resource if present, {@link #DEFAULT_BOOLEAN_RETURN} ({@value #DEFAULT_BOOLEAN_RETURN}) otherwise
      * @throws ClassCastException if the stored value for the required key is not boolean
      */
-    public static boolean getBoolean(Context ctx, String key) throws ClassCastException{
+    public static boolean getBoolean(@NonNull Context ctx, @NonNull String key) throws ClassCastException {
         return getSharedPreferences(ctx).getBoolean(key, DEFAULT_BOOLEAN_RETURN);
     }
 
@@ -89,21 +114,29 @@ final public class PreferencesManager {
      * @return the object de-serialized if present, null otherwise
      * @throws ClassCastException if the stored value for the required key is not an Object
      */
-    public static Object getObject(Context ctx, String key) throws ClassCastException {
+    public static Object getObject(@NonNull Context ctx, @NonNull String key) throws ClassCastException {
         String memoryObjectString = getSharedPreferences(ctx).getString(key, null);
         if (memoryObjectString == null)
             return null;
 
         try {
-            byte[] b = Base64.decode( memoryObjectString, Base64.DEFAULT);
+            byte[] b = Base64.decode(memoryObjectString, Base64.DEFAULT);
             ByteArrayInputStream bi = new ByteArrayInputStream(b);
             ObjectInputStream si = new ObjectInputStream(bi);
             return si.readObject();
         } catch (IOException e) {
             return null;
-        } catch (ClassNotFoundException e){
+        } catch (ClassNotFoundException e) {
             return null;
         }
+    }
+
+    /**
+     * @param ctx context of an Activity or Service
+     * @return all the values saved in preferences
+     */
+    public static Map<String, ?> getAllValues(@NonNull Context ctx) {
+        return getSharedPreferences(ctx).getAll();
     }
 
     /**
@@ -112,7 +145,7 @@ final public class PreferencesManager {
      * @param value value to be put or override
      * @return if the value has been set correctly
      */
-    public static boolean setInt(Context ctx, String key, int value) {
+    public static boolean setInt(@NonNull Context ctx, @NonNull String key, int value) {
         SharedPreferences.Editor editor = getEditor(ctx);
         editor.putInt(key, value);
         return editor.commit();
@@ -124,7 +157,33 @@ final public class PreferencesManager {
      * @param value value to be put or override
      * @return if the value has been set correctly
      */
-    public static boolean setString(Context ctx, String key, String value) {
+    public static boolean setFloat(@NonNull Context ctx, @NonNull String key, float value) {
+        SharedPreferences.Editor editor = getEditor(ctx);
+        editor.putFloat(key, value);
+        return editor.commit();
+    }
+
+    /**
+     * @param ctx   context of an Activity or Service
+     * @param key   key for the resource
+     * @param value value to be put or override
+     * @return if the value has been set correctly
+     */
+    public static boolean setLong(@NonNull Context ctx, @NonNull String key, long value) {
+        SharedPreferences.Editor editor = getEditor(ctx);
+        editor.putLong(key, value);
+        return editor.commit();
+    }
+
+    /**
+     * @param ctx   context of an Activity or Service
+     * @param key   key for the resource
+     * @param value value to be put or override
+     * @return if the value has been set correctly
+     */
+    public static boolean setString(@NonNull Context ctx, @NonNull String key, String value) {
+        if (value == null)
+            return removeValue(ctx, key);
         SharedPreferences.Editor editor = getEditor(ctx);
         editor.putString(key, value);
         return editor.commit();
@@ -136,7 +195,7 @@ final public class PreferencesManager {
      * @param value value to be put or override
      * @return if the value has been set correctly
      */
-    public static boolean setBoolean(Context ctx, String key, boolean value) {
+    public static boolean setBoolean(@NonNull Context ctx, @NonNull String key, boolean value) {
         SharedPreferences.Editor editor = getEditor(ctx);
         editor.putBoolean(key, value);
         return editor.commit();
@@ -151,7 +210,7 @@ final public class PreferencesManager {
      * @return if the value has been set correctly
      * @throws IOException Any exception thrown by the underlying OutputStream.
      */
-    public static boolean setObject(Context ctx, String key, Serializable object) throws IOException {
+    public static boolean setObject(@NonNull Context ctx, @NonNull String key, @NonNull Serializable object) throws IOException {
         ByteArrayOutputStream bo = new ByteArrayOutputStream();
         ObjectOutputStream so = new ObjectOutputStream(bo);
         so.writeObject(object);
@@ -167,7 +226,7 @@ final public class PreferencesManager {
      * @param value value to be summed to the current value
      * @return if the value has been updated correctly
      */
-    public static int updateInt(Context ctx, String key, int value) {
+    public static int updateInt(@NonNull Context ctx, @NonNull String key, int value) {
         int currentValue = getInt(ctx, key);
         if (currentValue == DEFAULT_INTEGER_RETURN)
             currentValue = 0;
@@ -184,7 +243,7 @@ final public class PreferencesManager {
      * @param key key for the resource
      * @return if the value has been updated correctly
      */
-    public static int updateInt(Context ctx, String key) {
+    public static int updateInt(@NonNull Context ctx, @NonNull String key) {
         return updateInt(ctx, key, DEFAULT_UPDATE_INT_ADD);
     }
 
@@ -195,7 +254,7 @@ final public class PreferencesManager {
      * @param key key for the resource
      * @return result of the shift, between 1 and maxValue included
      */
-    public static int shiftInt(Context ctx, String key, int maxValue) {
+    public static int shiftInt(@NonNull Context ctx, @NonNull String key, int maxValue) {
         int currentValue = getInt(ctx, key);
         if (currentValue == DEFAULT_INTEGER_RETURN)
             currentValue = 0;
@@ -211,7 +270,7 @@ final public class PreferencesManager {
      * @param key key for the resource
      * @return if the value has been removed correctly
      */
-    public static boolean removeValue(Context ctx, String key) {
+    public static boolean removeValue(@NonNull Context ctx, @NonNull String key) {
         SharedPreferences.Editor editor = getEditor(ctx);
         editor.remove(key);
         return editor.commit();
@@ -224,7 +283,7 @@ final public class PreferencesManager {
      * @param ctx context of an Activity or Service
      * @return if all the values have been removed correctly
      */
-    public static boolean removeAllValues(Context ctx) {
+    public static boolean removeAllValues(@NonNull Context ctx) {
         SharedPreferences.Editor editor = getEditor(ctx);
         return editor.clear().commit();
     }

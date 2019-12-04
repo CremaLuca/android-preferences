@@ -16,12 +16,16 @@ public class PreferencesManagerTest {
     private static final String DEFAULT_INT_KEY = "defaultIntKey";
     private static final String DEFAULT_STRING_KEY = "defaultStringKey";
     private static final String DEFAULT_BOOL_KEY = "defaultBooleanKey";
+    private static final String DEFAULT_FLOAT_KEY = "defaultFloatKey";
+    private static final String DEFAULT_LONG_KEY = "defaultLongKey";
     private static final String DEFAULT_OBJECT_KEY = "defaultObjectKey";
     private static final String DEFAULT_OBJECT_KEY_2 = "defaultObjectKey2";
 
     private static final int DEFAULT_INT_VALUE = 100;
     private static final String DEFAULT_STRING_VALUE = "Roberto";
     private static final boolean DEFAULT_BOOL_VALUE = true;
+    private static final float DEFAULT_FLOAT_VALUE = 12.3232132313f;
+    private static final long DEFAULT_LONG_VALUE = 33123232123123132L;
     private static final String DEFAULT_OBJECT_VALUE = "Test String";
     private static final Integer DEFAULT_OBJECT_VALUE_2 = 6;
     private static final int MAX_SHIFT_VALUE = 3;
@@ -36,6 +40,7 @@ public class PreferencesManagerTest {
     private static final boolean PRESENT_BOOL_VALUE = false;
     private static final String PRESENT_OBJECT_VALUE = "Test Object String";
 
+    private static final double DELTA = 0.0001d;
     private Context ctx;
 
     @Before
@@ -65,13 +70,23 @@ public class PreferencesManagerTest {
     }
 
     @Test
-    public void getObject_isNull() {
-        Assert.assertNull(PreferencesManager.getObject(ctx, DEFAULT_OBJECT_KEY));
+    public void getFloat_defaultFloat_isEquals() {
+        Assert.assertEquals(PreferencesManager.DEFAULT_FLOAT_RETURN, PreferencesManager.getFloat(ctx, DEFAULT_FLOAT_KEY), DELTA);
+    }
+
+    @Test
+    public void getLong_defaultLong_isEquals() {
+        Assert.assertEquals(PreferencesManager.DEFAULT_LONG_RETURN, PreferencesManager.getLong(ctx, DEFAULT_LONG_KEY));
     }
 
     @Test
     public void getBoolean_defaultBoolean_isEquals() {
         Assert.assertEquals(PreferencesManager.DEFAULT_BOOLEAN_RETURN, PreferencesManager.getBoolean(ctx, DEFAULT_BOOL_KEY));
+    }
+
+    @Test
+    public void getObject_isNull() {
+        Assert.assertNull(PreferencesManager.getObject(ctx, DEFAULT_OBJECT_KEY));
     }
 
     //test if the default value is returned for an over
@@ -98,6 +113,18 @@ public class PreferencesManagerTest {
     public void setString_getString_isEquals() {
         PreferencesManager.setString(ctx, DEFAULT_STRING_KEY, DEFAULT_STRING_VALUE);
         Assert.assertEquals(DEFAULT_STRING_VALUE, PreferencesManager.getString(ctx, DEFAULT_STRING_KEY));
+    }
+
+    @Test
+    public void setFloat_getFloat_isEquals() {
+        PreferencesManager.setFloat(ctx, DEFAULT_FLOAT_KEY, DEFAULT_FLOAT_VALUE);
+        Assert.assertEquals(DEFAULT_FLOAT_VALUE, PreferencesManager.getFloat(ctx, DEFAULT_FLOAT_KEY), DELTA);
+    }
+
+    @Test
+    public void setLong_getLong_isEquals() {
+        PreferencesManager.setLong(ctx, DEFAULT_LONG_KEY, DEFAULT_LONG_VALUE);
+        Assert.assertEquals(DEFAULT_LONG_VALUE, PreferencesManager.getLong(ctx, DEFAULT_LONG_KEY));
     }
 
     @Test
