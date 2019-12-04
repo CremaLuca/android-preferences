@@ -57,8 +57,9 @@ final public class PreferencesManager {
      * @param ctx context of an Activity or Service
      * @param key key for the resource
      * @return the value of the resource if present, {@link #DEFAULT_INTEGER_RETURN} ({@value #DEFAULT_INTEGER_RETURN}) otherwise
+     * @throws ClassCastException if the stored value for the required key is not int
      */
-    public static int getInt(Context ctx, String key) {
+    public static int getInt(Context ctx, String key) throws ClassCastException{
         return getSharedPreferences(ctx).getInt(key, DEFAULT_INTEGER_RETURN);
     }
 
@@ -66,8 +67,9 @@ final public class PreferencesManager {
      * @param ctx context of an Activity or Service
      * @param key key for the resource
      * @return the value of the resource if present, {@link #DEFAULT_STRING_RETURN} ({@value #DEFAULT_STRING_RETURN}) otherwise
+     * @throws ClassCastException if the stored value for the required key is not String
      */
-    public static String getString(Context ctx, String key) {
+    public static String getString(Context ctx, String key) throws ClassCastException{
         return getSharedPreferences(ctx).getString(key, DEFAULT_STRING_RETURN);
     }
 
@@ -75,8 +77,9 @@ final public class PreferencesManager {
      * @param ctx context of an Activity or Service
      * @param key key for the resource
      * @return the value of the resource if present, {@link #DEFAULT_BOOLEAN_RETURN} ({@value #DEFAULT_BOOLEAN_RETURN}) otherwise
+     * @throws ClassCastException if the stored value for the required key is not boolean
      */
-    public static boolean getBoolean(Context ctx, String key) {
+    public static boolean getBoolean(Context ctx, String key) throws ClassCastException{
         return getSharedPreferences(ctx).getBoolean(key, DEFAULT_BOOLEAN_RETURN);
     }
 
@@ -84,8 +87,9 @@ final public class PreferencesManager {
      * @param ctx context of an Activity or Service
      * @param key key for the resource
      * @return the object de-serialized if present, null otherwise
+     * @throws ClassCastException if the stored value for the required key is not an Object
      */
-    public static Object getObject(Context ctx, String key) {
+    public static Object getObject(Context ctx, String key) throws ClassCastException {
         String memoryObjectString = getSharedPreferences(ctx).getString(key, null);
         if (memoryObjectString == null)
             return null;
@@ -95,7 +99,9 @@ final public class PreferencesManager {
             ByteArrayInputStream bi = new ByteArrayInputStream(b);
             ObjectInputStream si = new ObjectInputStream(bi);
             return si.readObject();
-        } catch (Exception e) {
+        } catch (IOException e) {
+            return null;
+        } catch (ClassNotFoundException e){
             return null;
         }
     }

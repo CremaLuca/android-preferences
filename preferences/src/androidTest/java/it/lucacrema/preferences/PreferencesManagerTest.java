@@ -74,6 +74,12 @@ public class PreferencesManagerTest {
         Assert.assertEquals(PreferencesManager.DEFAULT_BOOLEAN_RETURN, PreferencesManager.getBoolean(ctx, DEFAULT_BOOL_KEY));
     }
 
+    //test if the default value is returned for an over
+    @Test
+    public void setString_getInt_isWrong(){
+        Assert.assertEquals(PreferencesManager.DEFAULT_INTEGER_RETURN, PreferencesManager.getInt(ctx, PRESENT_STRING_KEY));
+    }
+
     //tests for setValue
 
     @Test
