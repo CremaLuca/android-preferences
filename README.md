@@ -16,7 +16,7 @@ public class PrefsApplication extends Application {
         int preferencesInt = PreferencesManager.getInt(this, "intKey");
         String preferencesString = PreferencesManager.getString(this, "stringKey");
         boolean preferencesBoolean = PreferencesManager.getBoolean(this, "boolKey");
-        String preferencesStringObject = PreferencesManager.getObject(this, "objectKey");
+        String preferencesStringObject = (String)PreferencesManager.getObject(this, "objectKey");
     }
 }
 ```
@@ -47,6 +47,9 @@ You can also remove saved values
 ```Java
 PreferencesManager.removeValue(context, key);
 ```
+## Warning
+You can't use the same key for two different type of values
+
 # License
 
 ```
