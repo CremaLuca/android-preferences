@@ -75,9 +75,15 @@ public class PreferencesManagerTest {
     }
 
     //test if the default value is returned for an over
-    @Test
-    public void setString_getInt_isWrong(){
+    @Test(expected = ClassCastException.class)
+    public void setString_getInt_throwsError(){
         Assert.assertEquals(PreferencesManager.DEFAULT_INTEGER_RETURN, PreferencesManager.getInt(ctx, PRESENT_STRING_KEY));
+    }
+
+    @Test
+    public void overrideValueOtherType_isCorrect(){
+        PreferencesManager.setInt(ctx, PRESENT_STRING_KEY, DEFAULT_INT_VALUE);
+        Assert.assertEquals(DEFAULT_INT_VALUE, PreferencesManager.getInt(ctx, PRESENT_STRING_KEY));
     }
 
     //tests for setValue
