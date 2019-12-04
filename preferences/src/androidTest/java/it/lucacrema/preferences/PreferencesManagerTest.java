@@ -1,6 +1,7 @@
 package it.lucacrema.preferences;
 
 import android.content.Context;
+import android.preference.Preference;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 
@@ -17,19 +18,41 @@ public class PreferencesManagerTest {
     private static final String DEFAULT_BOOL_KEY = "defaultBooleanKey";
     private static final String DEFAULT_OBJECT_KEY = "defaultObjectKey";
     private static final String DEFAULT_OBJECT_KEY_2 = "defaultObjectKey2";
+
     private static final int DEFAULT_INT_VALUE = 100;
     private static final String DEFAULT_STRING_VALUE = "Roberto";
     private static final boolean DEFAULT_BOOL_VALUE = true;
     private static final String DEFAULT_OBJECT_VALUE = "Test String";
     private static final Integer DEFAULT_OBJECT_VALUE_2 = 6;
     private static final int MAX_SHIFT_VALUE = 3;
+
+    private static final String PRESENT_INT_KEY = "presentIntKey";
+    private static final String PRESENT_STRING_KEY = "presentStringKey";
+    private static final String PRESENT_BOOL_KEY = "presentBooleanKey";
+    private static final String PRESENT_OBJECT_KEY = "presentObjectKey";
+
+    private static final int PRESENT_INT_VALUE = 50;
+    private static final String PRESENT_STRING_VALUE = "Ignazio";
+    private static final boolean PRESENT_BOOL_VALUE = false;
+    private static final String PRESENT_OBJECT_VALUE = "Test Object String";
+
     private Context ctx;
 
     @Before
     public void setUp() {
         ctx = InstrumentationRegistry.getInstrumentation().getTargetContext();
         PreferencesManager.removeAllValues(ctx);
+        PreferencesManager.setInt(ctx, PRESENT_INT_KEY, PRESENT_INT_VALUE);
+        PreferencesManager.setString(ctx, PRESENT_STRING_KEY, PRESENT_STRING_VALUE);
+        PreferencesManager.setBoolean(ctx, PRESENT_BOOL_KEY, PRESENT_BOOL_VALUE);
+        try{
+            PreferencesManager.setObject(ctx, PRESENT_OBJECT_KEY, PRESENT_OBJECT_VALUE);
+        }catch(IOException e){
+            //Error
+        }
     }
+
+    //Tests for getValue with undefined value
 
     @Test
     public void getInt_defaultInteger_isEquals() {
@@ -50,6 +73,8 @@ public class PreferencesManagerTest {
     public void getBoolean_defaultBoolean_isEquals() {
         Assert.assertEquals(PreferencesManager.DEFAULT_BOOLEAN_RETURN, PreferencesManager.getBoolean(ctx, DEFAULT_BOOL_KEY));
     }
+
+    //tests for setValue
 
     @Test
     public void setInt_getInt_isEquals() {

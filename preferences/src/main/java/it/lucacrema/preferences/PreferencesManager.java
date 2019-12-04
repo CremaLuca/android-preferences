@@ -17,7 +17,7 @@ import java.io.Serializable;
  * Wrapper for {@link androidx.preference.PreferenceManager} class
  *
  *
- * @version 2.4
+ * @version 2.5
  * @author Luca Crema
  * @since 02/12/2019
  */
@@ -85,7 +85,6 @@ final public class PreferencesManager {
      * @param key key for the resource
      * @return the object de-serialized if present, null otherwise
      */
-    @Deprecated
     public static Object getObject(Context ctx, String key) {
         String memoryObjectString = getSharedPreferences(ctx).getString(key, null);
         if (memoryObjectString == null)
@@ -146,7 +145,6 @@ final public class PreferencesManager {
      * @return if the value has been set correctly
      * @throws IOException Any exception thrown by the underlying OutputStream.
      */
-    @Deprecated
     public static boolean setObject(Context ctx, String key, Serializable object) throws IOException {
         ByteArrayOutputStream bo = new ByteArrayOutputStream();
         ObjectOutputStream so = new ObjectOutputStream(bo);
