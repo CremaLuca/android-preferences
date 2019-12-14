@@ -1,4 +1,6 @@
 # Android preferences
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/5ffe7ceded4c440baf76cd9cfb3199df)](https://www.codacy.com/manual/CremaLuca/android-preferences?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=CremaLuca/android-preferences&amp;utm_campaign=Badge_Grade)
+
 Library that uses android preferences quickly to write and read `int`, `float`, `long`, `String`, `boolean`, `Object` from memory.
 
 You can use this library anywhere on your app, it just needs a context.
