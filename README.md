@@ -4,6 +4,7 @@
 [![Build Status](https://travis-ci.org/CremaLuca/android-preferences.svg?branch=master)](https://travis-ci.org/CremaLuca/android-preferences)
 [![Maintainability](https://api.codeclimate.com/v1/badges/7573e56874c27755d8c5/maintainability)](https://codeclimate.com/github/CremaLuca/android-preferences/maintainability)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![GitHub repo size](https://img.shields.io/github/repo-size/CremaLuca/android-preferences)
 
 Library that uses android preferences quickly to write and read `int`, `float`, `long`, `String`, `boolean`, `Object` from memory.
 
