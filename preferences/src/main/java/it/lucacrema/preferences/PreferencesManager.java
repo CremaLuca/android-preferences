@@ -146,9 +146,9 @@ final public class PreferencesManager {
             ByteArrayInputStream bi = new ByteArrayInputStream(b);
             ObjectInputStream si = new ObjectInputStream(bi);
             return si.readObject();
-        } catch (IOException e) {
+        } catch (IOException ioe) {
             return null;
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException cnfe) {
             return null;
         }
     }
