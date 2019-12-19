@@ -45,9 +45,7 @@ public class ObjectSerializerUtility {
             ByteArrayInputStream bi = new ByteArrayInputStream(b);
             ObjectInputStream si = new ObjectInputStream(bi);
             return si.readObject();
-        } catch (IOException ioe) {
-            return null;
-        } catch (ClassNotFoundException cnfe) {
+        } catch (IOException | ClassNotFoundException e) {
             return null;
         }
     }
