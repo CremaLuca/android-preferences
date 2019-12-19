@@ -30,6 +30,7 @@ final public class PreferencesManager {
     protected static final int DEFAULT_UPDATE_INT_ADD = 1;
 
     private SharedPreferences sharedPreferences;
+    protected ObjectSerializerUtility objectSerializerUtility;
 
     /**
      * @param ctx Current application context, used to set default shared preferences
@@ -42,7 +43,16 @@ final public class PreferencesManager {
      * @param sharedPrefs usually it's {@code PreferencesManager.getDefaultSharedPreferences(context)}
      */
     public PreferencesManager(SharedPreferences sharedPrefs) {
+        this(sharedPrefs, new ObjectSerializerUtility());
+    }
+
+    /**
+     * @param sharedPrefs             usually it's {@code PreferencesManager.getDefaultSharedPreferences(context)}.
+     * @param objectSerializerUtility class used to serialize and de-serialize objects.
+     */
+    public PreferencesManager(SharedPreferences sharedPrefs, ObjectSerializerUtility objectSerializerUtility) {
         this.sharedPreferences = sharedPrefs;
+        this.objectSerializerUtility = objectSerializerUtility;
     }
 
     /**
@@ -124,7 +134,7 @@ final public class PreferencesManager {
         if (memoryObjectString == null)
             return null;
 
-        return ObjectSerializerUtility.deserializeObject(memoryObjectString);
+        return objectSerializerUtility.deserializeObject(memoryObjectString);
     }
 
     /**
@@ -190,7 +200,7 @@ final public class PreferencesManager {
      * @throws IOException Any exception thrown by the underlying OutputStream.
      */
     public boolean setObject(@NonNull String key, @NonNull Serializable object) throws IOException {
-        return setString(key, ObjectSerializerUtility.serializeObject(object));
+        return setString(key, objectSerializerUtility.serializeObject(object));
     }
 
     /**

@@ -10,8 +10,10 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -50,13 +52,15 @@ public class PreferencesManagerTest {
     private SharedPreferences mockSharedPreferences;
     @Mock
     private SharedPreferences.Editor mockSharedPreferencesEditor;
+    @Mock
+    private ObjectSerializerUtility mockObjectSerializer;
 
     private PreferencesManager preferencesManager;
 
     @Before
     public void setUp() {
         createSharedPrefsMock();
-        preferencesManager = new PreferencesManager(mockSharedPreferences);
+        preferencesManager = new PreferencesManager(mockSharedPreferences, mockObjectSerializer);
         preferencesManager.removeAllValues();
         preferencesManager.setInt(PRESENT_INT_KEY, PRESENT_INT_VALUE);
         preferencesManager.setString(PRESENT_STRING_KEY, PRESENT_STRING_VALUE);
@@ -76,6 +80,12 @@ public class PreferencesManagerTest {
         when(mockSharedPreferencesEditor.putBoolean(any(String.class), any(Boolean.class))).thenReturn(mockSharedPreferencesEditor);
         when(mockSharedPreferencesEditor.putString(any(String.class), any(String.class))).thenReturn(mockSharedPreferencesEditor);
         when(mockSharedPreferencesEditor.commit()).thenReturn(true);
+        when(mockObjectSerializer.deserializeObject(any(String.class))).thenReturn(new Object());
+        try {
+            when(mockObjectSerializer.serializeObject(any(Serializable.class))).thenReturn("Nothing");
+        } catch (IOException e) {
+            //Do nothing, fail
+        }
     }
 
     //Tests for getValue with undefined value
@@ -90,6 +100,8 @@ public class PreferencesManagerTest {
 
     @Test
     public void getString_defaultString_isEquals() {
+        when(mockSharedPreferences.getString(DEFAULT_STRING_KEY, PreferencesManager.DEFAULT_STRING_RETURN))
+                .thenReturn(PreferencesManager.DEFAULT_STRING_RETURN);
         Assert.assertEquals(PreferencesManager.DEFAULT_STRING_RETURN, preferencesManager.getString(DEFAULT_STRING_KEY));
     }
 
@@ -103,27 +115,40 @@ public class PreferencesManagerTest {
 
     @Test
     public void getLong_defaultLong_isEquals() {
+        when(mockSharedPreferences.getLong(DEFAULT_LONG_KEY, PreferencesManager.DEFAULT_LONG_RETURN))
+                .thenReturn(PreferencesManager.DEFAULT_LONG_RETURN);
+
         Assert.assertEquals(PreferencesManager.DEFAULT_LONG_RETURN, preferencesManager.getLong(DEFAULT_LONG_KEY));
     }
 
     @Test
     public void getBoolean_defaultBoolean_isEquals() {
+        when(mockSharedPreferences.getBoolean(DEFAULT_BOOL_KEY, PreferencesManager.DEFAULT_BOOLEAN_RETURN))
+                .thenReturn(PreferencesManager.DEFAULT_BOOLEAN_RETURN);
+
         Assert.assertEquals(PreferencesManager.DEFAULT_BOOLEAN_RETURN, preferencesManager.getBoolean(DEFAULT_BOOL_KEY));
     }
 
     @Test
     public void getObject_isNull() {
+        when(mockSharedPreferences.getString(DEFAULT_OBJECT_KEY, null))
+                .thenReturn(null);
+
         Assert.assertNull(preferencesManager.getObject(DEFAULT_OBJECT_KEY));
     }
 
     //test if the default value is returned for an over
     @Test(expected = ClassCastException.class)
-    public void setString_getInt_throwsError() {
+    public void setString_getInt_throwsError() throws ClassCastException {
+        when(mockSharedPreferences.getInt(eq(PRESENT_STRING_KEY), any(Integer.class))).thenThrow(ClassCastException.class);
+
         Assert.assertEquals(PreferencesManager.DEFAULT_INTEGER_RETURN, preferencesManager.getInt(PRESENT_STRING_KEY));
     }
 
     @Test
     public void overrideValueOtherType_isCorrect() {
+        when(mockSharedPreferences.getInt(eq(PRESENT_STRING_KEY), any(Integer.class))).thenReturn(DEFAULT_INT_VALUE);
+
         preferencesManager.setInt(PRESENT_STRING_KEY, DEFAULT_INT_VALUE);
         Assert.assertEquals(DEFAULT_INT_VALUE, preferencesManager.getInt(PRESENT_STRING_KEY));
     }
