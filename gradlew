@@ -104,6 +104,11 @@ if [ "$cygwin" = "false" -a "$darwin" = "false" -a "$nonstop" = "false" ] ; then
     fi
 fi
 
+#Hack for TravisCI
+yes | $ANDROID_HOME/tools/bin/sdkmanager "build-tools;29.0.2"
+yes | $ANDROID_HOME/tools/bin/sdkmanager "platforms;android-29"
+
+
 # For Darwin, add options to specify how the application appears in the dock
 if $darwin; then
     GRADLE_OPTS="$GRADLE_OPTS \"-Xdock:name=$APP_NAME\" \"-Xdock:icon=$APP_HOME/media/gradle.icns\""

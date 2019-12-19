@@ -1,4 +1,12 @@
 # Android preferences
+[![](https://jitpack.io/v/CremaLuca/android-preferences.svg)](https://jitpack.io/#CremaLuca/android-preferences)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/5ffe7ceded4c440baf76cd9cfb3199df)](https://www.codacy.com/manual/CremaLuca/android-preferences?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=CremaLuca/android-preferences&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://travis-ci.org/CremaLuca/android-preferences.svg?branch=master)](https://travis-ci.org/CremaLuca/android-preferences)
+[![Maintainability](https://api.codeclimate.com/v1/badges/7573e56874c27755d8c5/maintainability)](https://codeclimate.com/github/CremaLuca/android-preferences/maintainability)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![GitHub repo size](https://img.shields.io/github/repo-size/CremaLuca/android-preferences)
+![GitHub Release Date](https://img.shields.io/github/release-date/CremaLuca/android-preferences)
+
 Library that uses android preferences quickly to write and read `int`, `float`, `long`, `String`, `boolean`, `Object` from memory.
 
 You can use this library anywhere on your app, it just needs a context.
@@ -93,17 +101,25 @@ PreferencesManager.getString(context, "key"); //returns "string"
 # License
 
 ```
-Copyright 2019 Luca Crema
+MIT License
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+Copyright (c) 2019 Luca Crema
 
-   https://www.apache.org/licenses/LICENSE-2.0
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 ```
