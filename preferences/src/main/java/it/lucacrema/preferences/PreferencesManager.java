@@ -28,9 +28,8 @@ final public class PreferencesManager {
     public static final boolean DEFAULT_BOOLEAN_RETURN = false;
 
     protected static final int DEFAULT_UPDATE_INT_ADD = 1;
-
-    private SharedPreferences sharedPreferences;
     protected ObjectSerializerUtility objectSerializerUtility;
+    private SharedPreferences sharedPreferences;
 
     /**
      * @param ctx Current application context, used to set default shared preferences
