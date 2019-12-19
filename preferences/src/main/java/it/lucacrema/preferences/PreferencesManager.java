@@ -2,16 +2,11 @@ package it.lucacrema.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Base64;
 
 import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Map;
 
@@ -34,22 +29,19 @@ final public class PreferencesManager {
 
     protected static final int DEFAULT_UPDATE_INT_ADD = 1;
 
-    private Context context;
     private SharedPreferences sharedPreferences;
 
     /**
-     * @param ctx Current application context
+     * @param ctx Current application context, used to set default shared preferences
      */
     public PreferencesManager(Context ctx) {
-        this(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
+        this(PreferenceManager.getDefaultSharedPreferences(ctx));
     }
 
     /**
-     * @param ctx         Current application context
      * @param sharedPrefs usually it's {@code PreferencesManager.getDefaultSharedPreferences(context)}
      */
-    public PreferencesManager(Context ctx, SharedPreferences sharedPrefs) {
-        this.context = ctx;
+    public PreferencesManager(SharedPreferences sharedPrefs) {
         this.sharedPreferences = sharedPrefs;
     }
 
@@ -71,19 +63,10 @@ final public class PreferencesManager {
     }
 
     /**
-     * @param sharedPreferences can be the default or a custom shared preferences class
      * @return the editor for the preferences
      */
-    private SharedPreferences.Editor getEditor(@NonNull SharedPreferences sharedPreferences) {
+    private SharedPreferences.Editor getEditor() {
         return sharedPreferences.edit();
-    }
-
-    /**
-     * @param context context of an Activity or Service
-     * @return default shared preferences editor
-     */
-    private SharedPreferences.Editor getEditor(@NonNull Context context) {
-        return PreferenceManager.getDefaultSharedPreferences(context).edit();
     }
 
     /**
@@ -141,16 +124,7 @@ final public class PreferencesManager {
         if (memoryObjectString == null)
             return null;
 
-        try {
-            byte[] b = Base64.decode(memoryObjectString, Base64.DEFAULT);
-            ByteArrayInputStream bi = new ByteArrayInputStream(b);
-            ObjectInputStream si = new ObjectInputStream(bi);
-            return si.readObject();
-        } catch (IOException ioe) {
-            return null;
-        } catch (ClassNotFoundException cnfe) {
-            return null;
-        }
+        return ObjectSerializerUtility.deserializeObject(memoryObjectString);
     }
 
     /**
@@ -166,9 +140,7 @@ final public class PreferencesManager {
      * @return if the value has been set correctly
      */
     public boolean setInt(@NonNull String key, int value) {
-        SharedPreferences.Editor editor = getEditor(context);
-        editor.putInt(key, value);
-        return editor.commit();
+        return getEditor().putInt(key, value).commit();
     }
 
     /**
@@ -177,9 +149,7 @@ final public class PreferencesManager {
      * @return if the value has been set correctly
      */
     public boolean setFloat(@NonNull String key, float value) {
-        SharedPreferences.Editor editor = getEditor(context);
-        editor.putFloat(key, value);
-        return editor.commit();
+        return getEditor().putFloat(key, value).commit();
     }
 
     /**
@@ -188,9 +158,7 @@ final public class PreferencesManager {
      * @return if the value has been set correctly
      */
     public boolean setLong(@NonNull String key, long value) {
-        SharedPreferences.Editor editor = getEditor(context);
-        editor.putLong(key, value);
-        return editor.commit();
+        return getEditor().putLong(key, value).commit();
     }
 
     /**
@@ -201,9 +169,7 @@ final public class PreferencesManager {
     public boolean setString(@NonNull String key, String value) {
         if (value == null)
             return removeValue(key);
-        SharedPreferences.Editor editor = getEditor(context);
-        editor.putString(key, value);
-        return editor.commit();
+        return getEditor().putString(key, value).commit();
     }
 
     /**
@@ -212,9 +178,7 @@ final public class PreferencesManager {
      * @return if the value has been set correctly
      */
     public boolean setBoolean(@NonNull String key, boolean value) {
-        SharedPreferences.Editor editor = getEditor(context);
-        editor.putBoolean(key, value);
-        return editor.commit();
+        return getEditor().putBoolean(key, value).commit();
     }
 
     /**
@@ -226,11 +190,7 @@ final public class PreferencesManager {
      * @throws IOException Any exception thrown by the underlying OutputStream.
      */
     public boolean setObject(@NonNull String key, @NonNull Serializable object) throws IOException {
-        ByteArrayOutputStream bo = new ByteArrayOutputStream();
-        ObjectOutputStream so = new ObjectOutputStream(bo);
-        so.writeObject(object);
-        so.flush();
-        return setString(key, new String(Base64.encode(bo.toByteArray(), Base64.DEFAULT)));
+        return setString(key, ObjectSerializerUtility.serializeObject(object));
     }
 
     /**
@@ -244,9 +204,7 @@ final public class PreferencesManager {
         int currentValue = getInt(key);
         if (currentValue == DEFAULT_INTEGER_RETURN)
             currentValue = 0;
-        SharedPreferences.Editor editor = getEditor(context);
-        editor.putInt(key, currentValue + value);
-        editor.commit();
+        getEditor().putInt(key, currentValue + value).commit();
         return currentValue + value;
     }
 
@@ -272,9 +230,7 @@ final public class PreferencesManager {
      * @return if the value has been removed correctly
      */
     public boolean removeValue(@NonNull String key) {
-        SharedPreferences.Editor editor = getEditor(context);
-        editor.remove(key);
-        return editor.commit();
+        return getEditor().remove(key).commit();
     }
 
     /**
@@ -284,8 +240,7 @@ final public class PreferencesManager {
      * @return if all the values have been removed correctly
      */
     public boolean removeAllValues() {
-        SharedPreferences.Editor editor = getEditor(context);
-        return editor.clear().commit();
+        return getEditor().clear().commit();
     }
 
 }
