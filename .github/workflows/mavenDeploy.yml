@@ -1,6 +1,6 @@
-name: Android CI
+name: Maven deploy
 
-on: [push]
+on: [release]
 
 jobs:
   build:
