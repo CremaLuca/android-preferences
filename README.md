@@ -17,19 +17,21 @@ public class PrefsApplication extends Application {
     public void onCreate() {
         super.onCreate();
         
-        PreferencesManager.setInt(this, "intKey", 5);
-        PreferencesManager.setFloat(this, "floatKey", 2.392658f);
-        PreferencesManager.setLong(this, "longKey", 12000000000L);
-        PreferencesManager.setString(this, "stringKey", "Test string");
-        PreferencesManager.setBoolean(this, "boolKey", false);
-        PreferencesManager.setObject(this, "objectKey", new String("Test object"));
+        PreferencesManager pm = new PreferencesManager(this);
         
-        int preferencesInt = PreferencesManager.getInt(this, "intKey");
-        float preferencesFloat = PreferencesManager.getFloat(this, "floatKey");
-        long preferencesLong = PreferencesManager.getLong(this, "longKey");
-        String preferencesString = PreferencesManager.getString(this, "stringKey");
-        boolean preferencesBoolean = PreferencesManager.getBoolean(this, "boolKey");
-        String preferencesStringObject = (String)PreferencesManager.getObject(this, "objectKey");
+        pm.setInt("intKey", 5);
+        pm.setFloat("floatKey", 2.392658f);
+        pm.setLong("longKey", 12000000000L);
+        pm.setString("stringKey", "Test string");
+        pm.setBoolean"boolKey", false);
+        pm.setObject("objectKey", new String("Test object"));
+        
+        int preferencesInt = pm.getInt("intKey");
+        float preferencesFloat = pm.getFloat("floatKey");
+        long preferencesLong = pm.getLong("longKey");
+        String preferencesString = pm.getString("stringKey");
+        boolean preferencesBoolean = pm.getBoolean("boolKey");
+        String preferencesStringObject = (String)pm.getObject("objectKey");
     }
 }
 ```
